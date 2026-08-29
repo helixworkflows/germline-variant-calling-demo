@@ -1,0 +1,53 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://raw.githubusercontent.com/taylordgenes/variant_calling/master/assets/schema_input.json",
+    "title": "taylordgenes/variant_calling pipeline - params.input schema",
+    "description": "Schema for the file provided with params.input",
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "patient": {
+                "type": "string",
+                "errorMessage": "Patient must be provided and cannot contain spaces",
+                "meta": ["patient"]
+            },
+            "sex": {
+                "type": "string",
+                "errorMessage": "Sex must be provided and cannot contain spaces",
+                "meta": ["sex"]
+            },
+            "status": {
+                "type": "integer",
+                "errorMessage": "Status must be provided and cannot contain spaces",
+                "meta": ["status"]
+            },
+            "sample": {
+                "type": "string",
+                "pattern": "^\\S+$",
+                "errorMessage": "Sample name must be provided and cannot contain spaces",
+                "meta": ["id"]
+            },
+            "lane": {
+                "type": "string",
+                "errorMessage": "Lane must be provided and cannot contain spaces",
+                "meta": ["lane"]
+            },
+            "fastq_1": {
+                "type": "string",
+                "format": "file-path",
+                "exists": true,
+                "pattern": "^([\\S\\s]*\\/)?[^\\s\\/]+\\.f(ast)?q\\.gz$",
+                "errorMessage": "FastQ file for reads 1 must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
+            },
+            "fastq_2": {
+                "type": "string",
+                "format": "file-path",
+                "exists": true,
+                "pattern": "^([\\S\\s]*\\/)?[^\\s\\/]+\\.f(ast)?q\\.gz$",
+                "errorMessage": "FastQ file for reads 2 cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
+            }
+        },
+        "required": ["sample", "fastq_1"]
+    }
+}

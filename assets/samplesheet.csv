@@ -1,0 +1,2 @@
+patient,sex,status,sample,lane,fastq_1,fastq_2
+test,XY,0,test1,test_L1,https://raw.githubusercontent.com/taylorjohnsonm95/taylordgenes-variant-calling/main/assets/small_test_data/giab.sub_R1.fastq.gz,https://raw.githubusercontent.com/taylorjohnsonm95/taylordgenes-variant-calling/main/assets/small_test_data/giab.sub_R2.fastq.gz

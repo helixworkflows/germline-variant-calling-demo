@@ -1,0 +1,295 @@
+{
+    "@context": [
+        "https://w3id.org/ro/crate/1.1/context",
+        {
+            "GithubService": "https://w3id.org/ro/terms/test#GithubService",
+            "JenkinsService": "https://w3id.org/ro/terms/test#JenkinsService",
+            "PlanemoEngine": "https://w3id.org/ro/terms/test#PlanemoEngine",
+            "TestDefinition": "https://w3id.org/ro/terms/test#TestDefinition",
+            "TestInstance": "https://w3id.org/ro/terms/test#TestInstance",
+            "TestService": "https://w3id.org/ro/terms/test#TestService",
+            "TestSuite": "https://w3id.org/ro/terms/test#TestSuite",
+            "TravisService": "https://w3id.org/ro/terms/test#TravisService",
+            "definition": "https://w3id.org/ro/terms/test#definition",
+            "engineVersion": "https://w3id.org/ro/terms/test#engineVersion",
+            "instance": "https://w3id.org/ro/terms/test#instance",
+            "resource": "https://w3id.org/ro/terms/test#resource",
+            "runsOn": "https://w3id.org/ro/terms/test#runsOn"
+        }
+    ],
+    "@graph": [
+        {
+            "@id": "./",
+            "@type": "Dataset",
+            "creativeWorkStatus": "InProgress",
+            "datePublished": "2025-11-05T20:54:16+00:00",
+            "description": "# taylordgenes-variant-calling\n\n[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new/taylordgenes/variant_calling)\n[![GitHub Actions CI Status](https://github.com/taylordgenes/variant_calling/actions/workflows/nf-test.yml/badge.svg)](https://github.com/taylordgenes/variant_calling/actions/workflows/nf-test.yml)\n[![GitHub Actions Linting Status](https://github.com/taylordgenes/variant_calling/actions/workflows/linting.yml/badge.svg)](https://github.com/taylordgenes/variant_calling/actions/workflows/linting.yml)[![Cite with Zenodo](http://img.shields.io/badge/DOI-10.5281/zenodo.XXXXXXX-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.XXXXXXX)\n[![nf-test](https://img.shields.io/badge/unit_tests-nf--test-337ab7.svg)](https://www.nf-test.com)\n\n[![Nextflow](https://img.shields.io/badge/version-%E2%89%A525.04.0-green?style=flat&logo=nextflow&logoColor=white&color=%230DC09D&link=https%3A%2F%2Fnextflow.io)](https://www.nextflow.io/)\n[![nf-core template version](https://img.shields.io/badge/nf--core_template-3.4.1-green?style=flat&logo=nfcore&logoColor=white&color=%2324B064&link=https%3A%2F%2Fnf-co.re)](https://github.com/nf-core/tools/releases/tag/3.4.1)\n[![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/)\n[![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)\n[![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/)\n[![Launch on Seqera Platform](https://img.shields.io/badge/Launch%20%F0%9F%9A%80-Seqera%20Platform-%234256e7)](https://cloud.seqera.io/launch?pipeline=https://github.com/taylordgenes/variant_calling)\n\n## Introduction\n\n**taylordgenes-variant-calling** is a Nextflow DSL2 pipeline for germline variant calling from Illumina whole-genome sequencing (WGS) data.\nIt takes paired-end FASTQ files as input, performs read-level quality control, alignment, and sample-level QC, and produces small variant (SNV/indel) and structural variant (SV) calls with functional annotation.\n\nThe pipeline is built using nf-core modules, follows nf-core best practices for reproducibility and portability, and optionally supports benchmarking against Genome in a Bottle (GIAB) truth sets to evaluate variant calling performance.\n\n## Pipeline overview\n\nThe default workflow includes the following steps:\n1. Read quality control (FastQC)\n2. Adapter trimming and read filtering (fastp)\n3. Alignment to the reference genome (BWA-MEM2)\n4. Duplicate marking and alignment metrics (Picard)\n5. Coverage and depth QC (mosdepth)\n6. Contamination estimation (VerifyBamID2)\n7. Sample identity, sex inference, and ancestry checks (Somalier)\n8. Small variant calling (SNVs and indels) (DeepVariant)\n9. Structural variant calling (Manta, TIDDIT)\n10. Variant annotation (Ensembl VEP)\n11. Aggregated reporting (MultiQC)\n\nOptional benchmarking against GIAB truth data can be enabled via a dedicated pipeline profile.\n\n## Usage\n\n> [!NOTE]\n> If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/usage/installation) on how to set-up Nextflow. Make sure to [test your setup](https://nf-co.re/docs/usage/introduction#how-to-run-a-pipeline) with `-profile test` before running the workflow on actual data.\n\nFirst, prepare a samplesheet with your input data that looks as follows:\n\n`samplesheet.csv`:\n\n```csv\nsample,fastq_1,fastq_2\nCONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz\n```\n\nEach row represents a pair of fastq files (paired end).\n\nNow, you can run the pipeline using:\n\n```bash\nnextflow run taylordgenes-variant-calling/main.nf \\\n   -profile <docker/singularity/.../institute> \\\n   --input samplesheet.csv \\\n   --genome GRCh38 \\\n   --outdir <OUTDIR>\n```\n\n> [!WARNING]\n> Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_; see [docs](https://nf-co.re/docs/usage/getting_started/configuration#custom-configuration-files).\n\n## Documentation\n\nThis pipeline includes extended documentation describing the selected tools, benchmarking strategy, and pipeline construction.\n\n### Methods\n\n[Methods](docs/methods.md)\n\nDescribes the end-to-end analytical methodology used by the pipeline, from raw Illumina sequencing reads through alignment, quality control, variant calling, and annotation.\nThis document explains why specific tools and parameters were chosen (for example, DeepVariant without BQSR, paired-end WGS assumptions, and QC thresholds), and is intended for users who want a clear understanding of the biological and technical rationale behind each pipeline stage.\n\n### Benchmarking\n\n[Benchmarking](docs/benchmarking.md)\n\nDetails the benchmarking framework used to evaluate small-variant calling performance using Genome in a Bottle (GIAB) truth sets.\nIt documents the normalization and comparison steps (bcftools norm and hap.py), the reference datasets used (HG002, GRCh38), and the interpretation of precision, recall, and F1-score metrics.\nBenchmarking can be enabled via a dedicated pipeline profile and is designed to support validation and method comparison.\n\n### Pipeline Design and Implementation\n\n[Pipeline Design](docs/building_the_pipeline.md)\n\nExplains how the pipeline was built using the nf-core template and modules, including workflow structure, channel design, parameter handling, and reference management via iGenomes.\nThis document is intended for developers and advanced users who want to understand how the workflow adheres to nf-core best practices for modularity, reproducibility, CI/CD testing, and scalability across cloud and HPC environments.\n\n## Credits\n\ntaylordgenes-variant-calling was originally written by Taylor Lynch.\n\nThis pipeline builds upon the work of the nf-core community and reuses a large number of nf-core modules and utilities.\n\n## Contributions and Support\n\nIf you would like to contribute to this pipeline, please see the [contributing guidelines](.github/CONTRIBUTING.md).\n\n## Citations\n\nAn extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.\n\nThis pipeline uses code and infrastructure developed and maintained by the [nf-core](https://nf-co.re) community, reused here under the [MIT license](https://github.com/nf-core/tools/blob/main/LICENSE).\n\n> **The nf-core framework for community-curated bioinformatics pipelines.**\n>\n> Philip Ewels, Alexander Peltzer, Sven Fillinger, Harshil Patel, Johannes Alneberg, Andreas Wilm, Maxime Ulysse Garcia, Paolo Di Tommaso & Sven Nahnsen.\n>\n> _Nat Biotechnol._ 2020 Feb 13. doi: [10.1038/s41587-020-0439-x](https://dx.doi.org/10.1038/s41587-020-0439-x).\n",
+            "hasPart": [
+                {
+                    "@id": "main.nf"
+                },
+                {
+                    "@id": "assets/"
+                },
+                {
+                    "@id": "conf/"
+                },
+                {
+                    "@id": "docs/"
+                },
+                {
+                    "@id": "modules/"
+                },
+                {
+                    "@id": "modules/nf-core/"
+                },
+                {
+                    "@id": "workflows/"
+                },
+                {
+                    "@id": "subworkflows/"
+                },
+                {
+                    "@id": "nextflow.config"
+                },
+                {
+                    "@id": "README.md"
+                },
+                {
+                    "@id": "nextflow_schema.json"
+                },
+                {
+                    "@id": "CHANGELOG.md"
+                },
+                {
+                    "@id": "LICENSE"
+                },
+                {
+                    "@id": "CITATIONS.md"
+                },
+                {
+                    "@id": "modules.json"
+                },
+                {
+                    "@id": "docs/usage.md"
+                },
+                {
+                    "@id": "docs/output.md"
+                },
+                {
+                    "@id": ".nf-core.yml"
+                },
+                {
+                    "@id": ".pre-commit-config.yaml"
+                },
+                {
+                    "@id": ".prettierignore"
+                }
+            ],
+            "isBasedOn": "https://github.com/taylordgenes/variant_calling",
+            "license": "MIT",
+            "mainEntity": {
+                "@id": "main.nf"
+            },
+            "mentions": [
+                {
+                    "@id": "#9162a9ab-8d6f-40bc-98de-c0f6cf1db497"
+                }
+            ],
+            "name": "taylordgenes/variant_calling"
+        },
+        {
+            "@id": "ro-crate-metadata.json",
+            "@type": "CreativeWork",
+            "about": {
+                "@id": "./"
+            },
+            "conformsTo": [
+                {
+                    "@id": "https://w3id.org/ro/crate/1.1"
+                },
+                {
+                    "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
+                }
+            ]
+        },
+        {
+            "@id": "main.nf",
+            "@type": [
+                "File",
+                "SoftwareSourceCode",
+                "ComputationalWorkflow"
+            ],
+            "dateCreated": "",
+            "dateModified": "2025-11-05T20:54:16Z",
+            "dct:conformsTo": "https://bioschemas.org/profiles/ComputationalWorkflow/1.0-RELEASE/",
+            "keywords": [
+                "nf-core",
+                "nextflow"
+            ],
+            "license": [
+                "MIT"
+            ],
+            "name": [
+                "taylordgenes/variant_calling"
+            ],
+            "programmingLanguage": {
+                "@id": "https://w3id.org/workflowhub/workflow-ro-crate#nextflow"
+            },
+            "sdPublisher": {
+                "@id": "https://nf-co.re/"
+            },
+            "url": [
+                "https://github.com/taylordgenes/variant_calling",
+                "https://nf-co.re/taylordgenes/variant_calling/dev/"
+            ],
+            "version": [
+                "1.0.0"
+            ]
+        },
+        {
+            "@id": "https://w3id.org/workflowhub/workflow-ro-crate#nextflow",
+            "@type": "ComputerLanguage",
+            "identifier": {
+                "@id": "https://www.nextflow.io/"
+            },
+            "name": "Nextflow",
+            "url": {
+                "@id": "https://www.nextflow.io/"
+            },
+            "version": "!>=25.04.0"
+        },
+        {
+            "@id": "#9162a9ab-8d6f-40bc-98de-c0f6cf1db497",
+            "@type": "TestSuite",
+            "instance": [
+                {
+                    "@id": "#3cd091f1-fc90-4f38-a37f-ece74ab612ec"
+                }
+            ],
+            "mainEntity": {
+                "@id": "main.nf"
+            },
+            "name": "Test suite for taylordgenes/variant_calling"
+        },
+        {
+            "@id": "#3cd091f1-fc90-4f38-a37f-ece74ab612ec",
+            "@type": "TestInstance",
+            "name": "GitHub Actions workflow for testing taylordgenes/variant_calling",
+            "resource": "repos/taylordgenes/variant_calling/actions/workflows/nf-test.yml",
+            "runsOn": {
+                "@id": "https://w3id.org/ro/terms/test#GithubService"
+            },
+            "url": "https://api.github.com"
+        },
+        {
+            "@id": "https://w3id.org/ro/terms/test#GithubService",
+            "@type": "TestService",
+            "name": "Github Actions",
+            "url": {
+                "@id": "https://github.com"
+            }
+        },
+        {
+            "@id": "assets/",
+            "@type": "Dataset",
+            "description": "Additional files"
+        },
+        {
+            "@id": "conf/",
+            "@type": "Dataset",
+            "description": "Configuration files"
+        },
+        {
+            "@id": "docs/",
+            "@type": "Dataset",
+            "description": "Markdown files for documenting the pipeline"
+        },
+        {
+            "@id": "modules/",
+            "@type": "Dataset",
+            "description": "Modules used by the pipeline"
+        },
+        {
+            "@id": "modules/nf-core/",
+            "@type": "Dataset",
+            "description": "nf-core modules"
+        },
+        {
+            "@id": "workflows/",
+            "@type": "Dataset",
+            "description": "Main pipeline workflows to be executed in main.nf"
+        },
+        {
+            "@id": "subworkflows/",
+            "@type": "Dataset",
+            "description": "Smaller subworkflows"
+        },
+        {
+            "@id": "nextflow.config",
+            "@type": "File",
+            "description": "Main Nextflow configuration file"
+        },
+        {
+            "@id": "README.md",
+            "@type": "File",
+            "description": "Basic pipeline usage information"
+        },
+        {
+            "@id": "nextflow_schema.json",
+            "@type": "File",
+            "description": "JSON schema for pipeline parameter specification"
+        },
+        {
+            "@id": "CHANGELOG.md",
+            "@type": "File",
+            "description": "Information on changes made to the pipeline"
+        },
+        {
+            "@id": "LICENSE",
+            "@type": "File",
+            "description": "The license - should be MIT"
+        },
+        {
+            "@id": "CITATIONS.md",
+            "@type": "File",
+            "description": "Citations needed when using the pipeline"
+        },
+        {
+            "@id": "modules.json",
+            "@type": "File",
+            "description": "Version information for modules from nf-core/modules"
+        },
+        {
+            "@id": "docs/usage.md",
+            "@type": "File",
+            "description": "Usage documentation"
+        },
+        {
+            "@id": "docs/output.md",
+            "@type": "File",
+            "description": "Output documentation"
+        },
+        {
+            "@id": ".nf-core.yml",
+            "@type": "File",
+            "description": "nf-core configuration file, configuring template features and linting rules"
+        },
+        {
+            "@id": ".pre-commit-config.yaml",
+            "@type": "File",
+            "description": "Configuration file for pre-commit hooks"
+        },
+        {
+            "@id": ".prettierignore",
+            "@type": "File",
+            "description": "Ignore file for prettier"
+        },
+        {
+            "@id": "https://nf-co.re/",
+            "@type": "Organization",
+            "name": "nf-core",
+            "url": "https://nf-co.re/"
+        }
+    ]
+}
