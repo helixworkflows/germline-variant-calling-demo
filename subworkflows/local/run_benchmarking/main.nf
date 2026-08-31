@@ -28,7 +28,9 @@ workflow RUN_BENCHMARKING {
     ch_happy_input = ch_norm_query_vcf
       .combine(ch_truth_vcf)
       .combine(ch_truth_bed)
-      .map { tup -> [ meta, query_vcf, truth_vcf, regions, [] ] }
+      .map { meta, query_vcf, truth_meta, truth_vcf, regions_meta, regions ->
+        [ meta, query_vcf, truth_vcf, regions, [] ]
+      }
 
     HAPPY_HAPPY(
       ch_happy_input,
