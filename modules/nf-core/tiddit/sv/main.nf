@@ -28,13 +28,22 @@ process TIDDIT_SV {
     """
     $bwa_command
 
+    # TIDDIT creates and removes transient indexes below <prefix>_tiddit.
+    # Keep those files on the native local filesystem because object-backed
+    # filesystems such as Fusion cannot reliably emulate that lifecycle.
+    tiddit_tmp=\$(mktemp -d /tmp/tiddit.XXXXXX)
+    trap 'rm -rf "\$tiddit_tmp"' EXIT
+
     tiddit \\
         --sv \\
         $args \\
         --threads $task.cpus \\
         --bam $input \\
         --ref $fasta \\
-        -o $prefix
+        -o "\$tiddit_tmp/$prefix"
+
+    cp "\$tiddit_tmp/${prefix}.vcf" ${prefix}.vcf
+    cp "\$tiddit_tmp/${prefix}.ploidies.tab" ${prefix}.ploidies.tab
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
