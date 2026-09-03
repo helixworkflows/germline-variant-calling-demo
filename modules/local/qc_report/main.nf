@@ -2,7 +2,7 @@ process QC_REPORT {
     tag 'cohort'
     label 'process_single'
 
-    container 'python:3.12-slim'
+    container 'docker.io/library/python:3.12-slim'
 
     input:
     path qc_files
