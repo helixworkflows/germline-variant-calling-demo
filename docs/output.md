@@ -24,6 +24,7 @@ The pipeline is built using Nextflow and processes whole-genome sequencing (WGS)
 - TIDDIT – Structural variant calling
 - Ensembl VEP – Variant annotation
 - MultiQC – Aggregated QC report
+- QC report – Machine-readable pass/fail summary
 - Pipeline information – Execution and provenance metadata
 
 ## FastQC
@@ -155,6 +156,14 @@ multiqc_data/: Parsed statistics from pipeline tools.
 multiqc_plots/: Static plots exported from the report.
 
 MultiQCa ggregates QC metrics from all supported tools into a single report, enabling rapid assessment of sample and pipeline performance.
+
+## QC report
+
+`qc_report/qc_report.csv`: Tidy, sample-level QC metrics and decisions.
+
+The CSV records the sample, metric category, metric name, observed value, unit,
+threshold, status, and source file. Default WGS thresholds can be overridden
+with `process.QC_REPORT.ext.args` in a Nextflow configuration file.
 
 ## Pipeline information
 

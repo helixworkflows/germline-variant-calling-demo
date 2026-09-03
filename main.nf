@@ -1,9 +1,9 @@
 #!/usr/bin/env nextflow
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    taylordgenes/variant_calling
+    Helix Workflows
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    Github : https://github.com/taylordgenes/variant_calling
+    Github : https://github.com/helixworkflows/germline-variant-calling-demo
 ----------------------------------------------------------------------------------------
 */
 
@@ -94,6 +94,7 @@ workflow TAYLORDGENES_VARIANT_CALLING {
     )
     emit:
     multiqc_report = VARIANT_CALLING.out.multiqc_report // channel: /path/to/multiqc_report.html
+    qc_report      = VARIANT_CALLING.out.qc_report      // channel: /path/to/qc_report.csv
 }
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -17,9 +17,8 @@ include { SOMALIER_RELATE        } from '../modules/nf-core/somalier/relate/main
 include { SAMTOOLS_FLAGSTAT      } from '../modules/nf-core/samtools/flagstat/main'
 include { SAMTOOLS_IDXSTATS      } from '../modules/nf-core/samtools/idxstats/main'
 include { DEEPVARIANT_RUNDEEPVARIANT} from '../modules/nf-core/deepvariant/rundeepvariant/main'
-include { MANTA_GERMLINE         } from '../modules/nf-core/manta/germline/main'
-include { TIDDIT_SV              } from '../modules/nf-core/tiddit/sv/main'
 include { ENSEMBLVEP_VEP         } from '../modules/nf-core/ensemblvep/vep/main'
+include { QC_REPORT              } from '../modules/local/qc_report/main'
 include { RUN_BENCHMARKING       } from '../subworkflows/local/run_benchmarking'
 include { paramsSummaryMap       } from 'plugin/nf-schema'
 include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
@@ -49,6 +48,7 @@ workflow VARIANT_CALLING {
 
     ch_versions = Channel.empty()
     ch_multiqc_files = Channel.empty()
+    ch_qc_report_files = Channel.empty()
 
     //
     // MODULE: Run FastQC
@@ -57,6 +57,7 @@ workflow VARIANT_CALLING {
         ch_samplesheet
     )
     ch_multiqc_files = ch_multiqc_files.mix(FASTQC.out.zip.collect{it[1]})
+    ch_qc_report_files = ch_qc_report_files.mix(FASTQC.out.zip.map{ meta, report -> report })
     ch_versions = ch_versions.mix(FASTQC.out.versions.first())
 
     //
@@ -70,6 +71,7 @@ workflow VARIANT_CALLING {
     )
     ch_multiqc_files = ch_multiqc_files.mix(FASTP.out.html.collect{ it[1] })
     ch_multiqc_files = ch_multiqc_files.mix(FASTP.out.json.collect{ it[1] })
+    ch_qc_report_files = ch_qc_report_files.mix(FASTP.out.json.map{ meta, report -> report })
     ch_versions = ch_versions.mix(FASTP.out.versions.first())
 
     //
@@ -92,6 +94,7 @@ workflow VARIANT_CALLING {
         ch_fasta_fai
     )
     ch_multiqc_files = ch_multiqc_files.mix(PICARD_MARKDUPLICATES.out.metrics.collect{ it[1] })
+    ch_qc_report_files = ch_qc_report_files.mix(PICARD_MARKDUPLICATES.out.metrics.map{ meta, report -> report })
 
     ch_bam = PICARD_MARKDUPLICATES.out.bam
     ch_bai = PICARD_MARKDUPLICATES.out.bai
@@ -105,6 +108,7 @@ workflow VARIANT_CALLING {
         []
     )
     ch_multiqc_files = ch_multiqc_files.mix(PICARD_COLLECTWGSMETRICS.out.metrics.collect{ it[1] })
+    ch_qc_report_files = ch_qc_report_files.mix(PICARD_COLLECTWGSMETRICS.out.metrics.map{ meta, report -> report })
     ch_versions = ch_versions.mix(PICARD_COLLECTWGSMETRICS.out.versions.first())
 
     // //
@@ -116,6 +120,7 @@ workflow VARIANT_CALLING {
         ch_fasta
     )
     ch_multiqc_files = ch_multiqc_files.mix(MOSDEPTH.out.summary_txt.collect{ it[1] })
+    ch_qc_report_files = ch_qc_report_files.mix(MOSDEPTH.out.summary_txt.map{ meta, report -> report })
     ch_versions = ch_versions.mix(MOSDEPTH.out.versions.first())
 
     // //
@@ -128,6 +133,7 @@ workflow VARIANT_CALLING {
         ch_fasta.map{ meta, fa -> fa }
     )
     ch_multiqc_files = ch_multiqc_files.mix(VERIFYBAMID_VERIFYBAMID2.out.self_sm.collect{ it[1] })
+    ch_qc_report_files = ch_qc_report_files.mix(VERIFYBAMID_VERIFYBAMID2.out.self_sm.map{ meta, report -> report })
     ch_versions = ch_versions.mix(VERIFYBAMID_VERIFYBAMID2.out.versions.first())
 
     // //
@@ -150,6 +156,7 @@ workflow VARIANT_CALLING {
         ch_labelled_somalier_files
     )
     ch_multiqc_files = ch_multiqc_files.mix(SOMALIER_ANCESTRY.out.html.collect{ it[1] })
+    ch_qc_report_files = ch_qc_report_files.mix(SOMALIER_ANCESTRY.out.tsv.map{ meta, report -> report })
     ch_versions = ch_versions.mix(SOMALIER_ANCESTRY.out.versions)
 
     ch_query_somalier_files_ped = ch_query_somalier_files.combine(ch_somalier_ped.map { meta, ped -> [ped ?: []] })
@@ -158,6 +165,7 @@ workflow VARIANT_CALLING {
         []
     )
     ch_multiqc_files = ch_multiqc_files.mix(SOMALIER_RELATE.out.html.collect{ it[1] })
+    ch_qc_report_files = ch_qc_report_files.mix(SOMALIER_RELATE.out.samples_tsv.map{ meta, report -> report })
     ch_versions = ch_versions.mix(SOMALIER_RELATE.out.versions.first())
 
     // //
@@ -173,6 +181,7 @@ workflow VARIANT_CALLING {
         ch_bam_bai
     )
     ch_multiqc_files = ch_multiqc_files.mix(SAMTOOLS_FLAGSTAT.out.flagstat.collect{ it[1] })
+    ch_qc_report_files = ch_qc_report_files.mix(SAMTOOLS_FLAGSTAT.out.flagstat.map{ meta, report -> report })
     ch_versions = ch_versions.mix(SAMTOOLS_FLAGSTAT.out.versions.first())
 
     // //
@@ -186,27 +195,7 @@ workflow VARIANT_CALLING {
         [ [ id:'null' ], [] ]
     )
     ch_versions = ch_versions.mix(DEEPVARIANT_RUNDEEPVARIANT.out.versions.first())
-
-    // //
-    // // MODULE: Run manta
-    // //
-    MANTA_GERMLINE(
-        ch_bam_bai.map { meta, bam, bai -> [ meta, bam, bai, [], [] ] },
-        ch_fasta,
-        ch_fasta_fai,
-        []
-    )
-    ch_versions = ch_versions.mix(MANTA_GERMLINE.out.versions.first())
-
-    // //
-    // // MODULE: Run tiddit
-    // //
-    TIDDIT_SV (
-        ch_bam_bai,
-        ch_fasta,
-        ch_bwamem2
-    )
-    ch_versions = ch_versions.mix(TIDDIT_SV.out.versions.first())
+    ch_qc_report_files = ch_qc_report_files.mix(DEEPVARIANT_RUNDEEPVARIANT.out.vcf.map{ meta, vcf -> vcf })
 
     // //
     // // MODULE: Run VEP
@@ -222,6 +211,10 @@ workflow VARIANT_CALLING {
         []                // extra_files (plugins/custom VCFs)
     )
     ch_versions = ch_versions.mix(ENSEMBLVEP_VEP.out.versions.first())
+
+    // Create a machine-readable QC decision table across all samples.
+    QC_REPORT(ch_qc_report_files.collect())
+    ch_versions = ch_versions.mix(QC_REPORT.out.versions.first())
 
     //
     // Collate and save software versions
@@ -283,7 +276,9 @@ workflow VARIANT_CALLING {
         )
     }
 
-    emit:multiqc_report = MULTIQC.out.report.toList() // channel: /path/to/multiqc_report.html
+    emit:
+    multiqc_report = MULTIQC.out.report.toList() // channel: /path/to/multiqc_report.html
+    qc_report      = QC_REPORT.out.report        // channel: /path/to/qc_report.csv
     versions       = ch_versions                 // channel: [ path(versions.yml) ]
 
 }

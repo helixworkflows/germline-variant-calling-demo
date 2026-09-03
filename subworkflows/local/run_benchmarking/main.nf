@@ -36,9 +36,9 @@ workflow RUN_BENCHMARKING {
       ch_happy_input,
       ch_fasta,
       ch_fasta_fai,
-      [],
-      [],
-      []
+      [[],[]],
+      [[],[]],
+      [[],[]]
     )
 
   emit:
