@@ -2,7 +2,7 @@ process QC_REPORT {
     tag 'cohort'
     label 'process_single'
 
-    container 'docker.io/library/python:3.12-slim'
+    container 'community.wave.seqera.io/library/python:3.12.14--e1a45735c4c986d6'
 
     input:
     path qc_files
