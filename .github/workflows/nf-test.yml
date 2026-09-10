@@ -1,9 +1,6 @@
 name: nf-test
 
 on:
-  pull_request:
-    branches:
-      - main
   push:
     branches:
       - main
@@ -20,18 +17,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Inspect OIDC claims
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const token = await core.getIDToken('sts.amazonaws.com');
-            const claims = JSON.parse(
-              Buffer.from(token.split('.')[1], 'base64url').toString()
-            );
-            for (const key of ['iss', 'aud', 'sub', 'ref', 'environment', 'event_name']) {
-              core.info(`${key}: ${claims[key] ?? '(absent)'}`);
-            }
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v5
