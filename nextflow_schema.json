@@ -1,7 +1,7 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://raw.githubusercontent.com/taylordgenes/variant_calling/master/nextflow_schema.json",
-    "title": "taylordgenes/variant_calling pipeline parameters",
+    "$id": "https://raw.githubusercontent.com/helixworkflows/germline-variant-calling-demo/master/nextflow_schema.json",
+    "title": "helixworkflows/germline-variant-calling-demo pipeline parameters",
     "description": "A germline variant calling pipeline",
     "type": "object",
     "$defs": {

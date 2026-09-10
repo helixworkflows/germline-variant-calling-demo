@@ -1,4 +1,4 @@
-# taylordgenes-variant-calling: Benchmarking
+# Helix Workflows germline variant calling: Benchmarking
 
 ## Overview
 
