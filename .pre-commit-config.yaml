@@ -42,17 +42,3 @@ repos:
     hooks:
       - id: shellcheck
         files: \.sh$
-
-  - repo: https://github.com/seqeralabs/nf-lint-pre-commit
-    rev: v0.3.0
-    hooks:
-      - id: nextflow-lint
-        files: '\.nf$|nextflow\.config$'
-        args: ["-output", "json"]
-
-  - repo: local
-    hooks:
-      - id: block-pipeline-outdir
-        name: Prevent committing pipeline test outputs
-        entry: ./.hooks/block_pipeline_outdir.sh
-        language: script

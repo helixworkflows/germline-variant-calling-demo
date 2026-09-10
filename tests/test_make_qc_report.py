@@ -17,10 +17,16 @@ class QcReportTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             fastp = root / "NA12878.fastp.json"
-            fastp.write_text(json.dumps({"summary": {
-                "before_filtering": {"total_reads": 100},
-                "after_filtering": {"total_reads": 90, "q30_rate": 0.85},
-            }}))
+            fastp.write_text(
+                json.dumps(
+                    {
+                        "summary": {
+                            "before_filtering": {"total_reads": 100},
+                            "after_filtering": {"total_reads": 90, "q30_rate": 0.85},
+                        }
+                    }
+                )
+            )
             flagstat = root / "NA12878.flagstat"
             flagstat.write_text(
                 "100 + 0 in total (QC-passed reads + QC-failed reads)\n"
@@ -28,16 +34,20 @@ class QcReportTest(unittest.TestCase):
                 "89 + 0 properly paired (89.00% : N/A)\n"
             )
             mosdepth = root / "NA12878.summary.txt"
-            mosdepth.write_text("chrom\tlength\tbases\tmean\tmin\tmax\n"
-                                "total\t100\t3100\t31\t0\t50\n")
+            mosdepth.write_text(
+                "chrom\tlength\tbases\tmean\tmin\tmax\ntotal\t100\t3100\t31\t0\t50\n"
+            )
             vcf = root / "NA12878.vcf"
-            vcf.write_text("##fileformat=VCFv4.2\n#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\n"
-                           "1\t1\t.\tA\tG\t50\tPASS\n"
-                           "1\t2\t.\tA\tAT\t50\tPASS\n")
+            vcf.write_text(
+                "##fileformat=VCFv4.2\n#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\n"
+                "1\t1\t.\tA\tG\t50\tPASS\n"
+                "1\t2\t.\tA\tAT\t50\tPASS\n"
+            )
             output = root / "report.csv"
 
-            result = REPORT.main(["-o", str(output), str(fastp), str(flagstat),
-                                  str(mosdepth), str(vcf)])
+            result = REPORT.main(
+                ["-o", str(output), str(fastp), str(flagstat), str(mosdepth), str(vcf)]
+            )
             self.assertEqual(result, 0)
             with output.open(newline="") as handle:
                 rows = list(csv.DictReader(handle))

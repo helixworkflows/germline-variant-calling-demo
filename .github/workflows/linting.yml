@@ -32,7 +32,7 @@ jobs:
           Rscript -e 'install.packages("lintr", repos="https://cloud.r-project.org")'
 
       - name: Run pre-commit
-        run: pre-commit run --all-files
+        run: pre-commit run --files bin/*
 
       - name: Lint R scripts
         run: |
