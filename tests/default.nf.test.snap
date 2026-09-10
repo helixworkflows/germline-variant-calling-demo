@@ -245,7 +245,7 @@
                 "test1.vcf.gz:md5,64315490bf004b5e2135923fc2a627d9",
                 "test1.vcf.gz.tbi:md5,be1bc03ac69a407490f6aafb9e668275",
                 "test1.fastp.json:md5,4398d209f1d04c70ea700ff597bd97b3",
-                "test1.fastp.log:md5,4b380bb8e84ea68270709925892eb049",
+                "test1.fastp.log:md5,ee036a2baeb6b007307a125544ff8cd9",
                 "test1_R1.fastp.fastq.gz:md5,e4151abe3bd6499f01eab97345fa8f4c",
                 "test1_R2.fastp.fastq.gz:md5,85115a94100efce9ca0700cddd48eefe",
                 "test1.mosdepth.global.dist.txt:md5,d2a1becc5450b49c1a0850e86b6dd21d",
@@ -296,7 +296,7 @@
                 "samtools-idxstats-mapped-reads-plot_Normalised_Counts.txt:md5,94be7fe84a60fba2c8303bc1e1220444",
                 "samtools-idxstats-mapped-reads-plot_Observed_over_Expected_Counts.txt:md5,94be7fe84a60fba2c8303bc1e1220444",
                 "samtools-idxstats-mapped-reads-plot_Raw_Counts.txt:md5,0148cdf30da633287e7651349ed184c7",
-                "test1.markdup.MarkDuplicates.metrics.txt:md5,1bab9dd960aca541d4d39ea99347237d",
+                "test1.markdup.MarkDuplicates.metrics.txt:md5,8a20d6408e11679088deabf28753e434",
                 "test1.markdup.bai:md5,7db9c45ed4ac30a13cf6473a85fa9fee",
                 "test1.markdup.bam:md5,15096a4bd6bcbb426e307217fda999ab",
                 "qc_report.csv:md5,61ca1bff1eeddb305e38050f8ad5f69d",
@@ -304,7 +304,7 @@
                 "test1.idxstats:md5,c820b9a7f34cb1cf67a440a91e7363a9"
             ]
         ],
-        "timestamp": "2026-09-10T17:21:37.306047142",
+        "timestamp": "2026-09-10T17:49:35.059971988",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
