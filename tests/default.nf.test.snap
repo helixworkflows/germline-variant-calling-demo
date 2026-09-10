@@ -27,7 +27,7 @@
                     "samtools": "1.22.1"
                 },
                 "Workflow": {
-                    "taylorjohnsonm95/taylordgenes-variant-calling": "v1.0.0"
+                    "helixworkflows/germline-variant-calling-demo": "v1.0.0"
                 }
             },
             [

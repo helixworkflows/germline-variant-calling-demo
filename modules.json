@@ -1,6 +1,6 @@
 {
-    "name": "taylordgenes/variant_calling",
-    "homePage": "https://github.com/taylordgenes/variant_calling",
+    "name": "helixworkflows/germline-variant-calling-demo",
+    "homePage": "https://github.com/helixworkflows/germline-variant-calling-demo",
     "repos": {
         "https://github.com/nf-core/modules.git": {
             "modules": {

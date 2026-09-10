@@ -1,11 +1,11 @@
-# taylordgenes/variant_calling: Changelog
+# helixworkflows/germline-variant-calling-demo: Changelog
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## v1.0.0 - [date]
 
-Initial release of taylordgenes/variant_calling, created with the [nf-core](https://nf-co.re/) template.
+Initial release of helixworkflows/germline-variant-calling-demo, created with the [nf-core](https://nf-co.re/) template.
 
 ### `Added`
 

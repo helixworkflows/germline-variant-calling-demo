@@ -1,8 +1,8 @@
 # Helix Workflows - Germline Variant Calling Demo
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new/taylordgenes/variant_calling)
-[![GitHub Actions CI Status](https://github.com/taylordgenes/variant_calling/actions/workflows/nf-test.yml/badge.svg)](https://github.com/taylordgenes/variant_calling/actions/workflows/nf-test.yml)
-[![GitHub Actions Linting Status](https://github.com/taylordgenes/variant_calling/actions/workflows/linting.yml/badge.svg)](https://github.com/taylordgenes/variant_calling/actions/workflows/linting.yml)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new/helixworkflows/germline-variant-calling-demo)
+[![GitHub Actions CI Status](https://github.com/helixworkflows/germline-variant-calling-demo/actions/workflows/nf-test.yml/badge.svg)](https://github.com/helixworkflows/germline-variant-calling-demo/actions/workflows/nf-test.yml)
+[![GitHub Actions Linting Status](https://github.com/helixworkflows/germline-variant-calling-demo/actions/workflows/linting.yml/badge.svg)](https://github.com/helixworkflows/germline-variant-calling-demo/actions/workflows/linting.yml)
 [![nf-test](https://img.shields.io/badge/unit_tests-nf--test-337ab7.svg)](https://www.nf-test.com)
 [![Nextflow](https://img.shields.io/badge/version-%E2%89%A525.04.0-green?style=flat&logo=nextflow&logoColor=white&color=%230DC09D&link=https%3A%2F%2Fnextflow.io)](https://www.nextflow.io/)
 [![nf-core template version](https://img.shields.io/badge/nf--core_template-3.4.1-green?style=flat&logo=nfcore&logoColor=white&color=%2324B064&link=https%3A%2F%2Fnf-co.re)](https://github.com/nf-core/tools/releases/tag/3.4.1)
@@ -51,7 +51,7 @@ Each row represents a pair of fastq files (paired end).
 Now, you can run the pipeline using:
 
 ```bash
-nextflow run taylordgenes-variant-calling/main.nf \
+nextflow run helixworkflows/germline-variant-calling-demo \
    -profile <docker/singularity/.../institute> \
    --input samplesheet.csv \
    --genome GRCh38 \
@@ -75,7 +75,7 @@ Benchmarking can be enabled via a dedicated pipeline profile and is designed to 
 
 ## Credits
 
-taylordgenes-variant-calling was originally written by Taylor Lynch.
+Helix Workflows germline variant calling was originally written by Taylor Lynch.
 
 This pipeline builds upon the work of the nf-core community and reuses a large number of nf-core modules and utilities.
 

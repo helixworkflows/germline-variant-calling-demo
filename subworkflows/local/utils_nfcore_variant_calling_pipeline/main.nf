@@ -1,5 +1,5 @@
 //
-// Subworkflow with functionality specific to the taylordgenes/variant_calling pipeline
+// Subworkflow with functionality specific to the helixworkflows/germline-variant-calling-demo pipeline
 //
 
 /*

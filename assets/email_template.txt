@@ -1,10 +1,10 @@
 Run Name: $runName
 
 <% if (success){
-    out << "## taylordgenes/variant_calling execution completed successfully! ##"
+    out << "## helixworkflows/germline-variant-calling-demo execution completed successfully! ##"
 } else {
     out << """####################################################
-## taylordgenes/variant_calling execution completed unsuccessfully! ##
+## helixworkflows/germline-variant-calling-demo execution completed unsuccessfully! ##
 ####################################################
 The exit status of the task that caused the workflow execution to fail was: $exitStatus.
 The full error message was:
@@ -27,5 +27,5 @@ Pipeline Configuration:
 <% out << summary.collect{ k,v -> " - $k: $v" }.join("\n") %>
 
 --
-taylordgenes/variant_calling
-https://github.com/taylordgenes/variant_calling
+helixworkflows/germline-variant-calling-demo
+https://github.com/helixworkflows/germline-variant-calling-demo

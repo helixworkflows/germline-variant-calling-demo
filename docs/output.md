@@ -1,4 +1,4 @@
-# taylordgenes/variant-calling: Output
+# Helix Workflows germline variant calling: Output
 
 ## Introduction
 

@@ -1,4 +1,4 @@
-# taylordgenes/variant_calling: Citations
+# helixworkflows/germline-variant-calling-demo: Citations
 
 ## [nf-core](https://pubmed.ncbi.nlm.nih.gov/32055031/)
 

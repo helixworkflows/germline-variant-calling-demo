@@ -1,7 +1,7 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://raw.githubusercontent.com/taylordgenes/variant_calling/master/assets/schema_input.json",
-    "title": "taylordgenes/variant_calling pipeline - params.input schema",
+    "$id": "https://raw.githubusercontent.com/helixworkflows/germline-variant-calling-demo/master/assets/schema_input.json",
+    "title": "helixworkflows/germline-variant-calling-demo pipeline - params.input schema",
     "description": "Schema for the file provided with params.input",
     "type": "array",
     "items": {

@@ -40,7 +40,7 @@ params.bwamem2 = getGenomeAttribute('bwamem2')
 //
 // WORKFLOW: Run main analysis pipeline depending on type of input
 //
-workflow TAYLORDGENES_VARIANT_CALLING {
+workflow HELIXWORKFLOWS {
 
     take:
     samplesheet // channel: samplesheet read in from --input
@@ -123,7 +123,7 @@ workflow {
     //
     // WORKFLOW: Run main workflow
     //
-    TAYLORDGENES_VARIANT_CALLING (
+    HELIXWORKFLOWS (
         PIPELINE_INITIALISATION.out.samplesheet
     )
     //
@@ -136,7 +136,7 @@ workflow {
         params.outdir,
         params.monochrome_logs,
         params.hook_url,
-        TAYLORDGENES_VARIANT_CALLING.out.multiqc_report
+        HELIXWORKFLOWS.out.multiqc_report
     )
 }
 
