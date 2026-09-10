@@ -44,4 +44,6 @@ jobs:
           sudo mv nf-test /usr/local/bin/
 
       - name: Run nf-test
+        env:
+          TOWER_ACCESS_TOKEN: ${{ secrets.TOWER_ACCESS_TOKEN }}
         run: nf-test test tests/default.nf.test --verbose
