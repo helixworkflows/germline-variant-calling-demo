@@ -1,0 +1,65 @@
+nextflow_process {
+
+    name "Test Process QC_REPORT"
+    script "../main.nf"
+    process "QC_REPORT"
+    config "./nextflow.config"
+    tag "modules"
+    tag "qc_report"
+
+    test("cohort metrics include PASS, FAIL and INFO rows") {
+        when {
+            process {
+                """
+                // One emission containing all files produces one cohort report.
+                input[0] = Channel.of([
+                    file("${moduleTestDir}/data/sampleB.fastp.json", checkIfExists: true),
+                    file("${moduleTestDir}/data/sampleA.vcf", checkIfExists: true),
+                    file("${moduleTestDir}/data/sampleA.summary.txt", checkIfExists: true),
+                    file("${moduleTestDir}/data/sampleA.flagstat", checkIfExists: true),
+                    file("${moduleTestDir}/data/sampleA.fastp.json", checkIfExists: true)
+                ])
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("single QC file") {
+        when {
+            process {
+                """
+                input[0] = Channel.of(file("${moduleTestDir}/data/sampleB.fastp.json", checkIfExists: true))
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("stub emits report header and versions") {
+        options "-stub-run"
+        when {
+            process {
+                """
+                input[0] = Channel.of(file("${moduleTestDir}/data/sampleA.fastp.json", checkIfExists: true))
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
