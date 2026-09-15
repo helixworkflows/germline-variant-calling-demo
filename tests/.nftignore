@@ -12,3 +12,5 @@ fastqc/*_fastqc.{html,zip}
 pipeline_info/*.{html,json,txt,yml}
 picard/*.CollectWgsMetrics.coverage_metrics
 fastp/*.fastp.html
+picard/*.markdup.MarkDuplicates.metrics.txt
+fastp/*.fastp.log
