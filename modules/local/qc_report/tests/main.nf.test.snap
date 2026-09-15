@@ -1,0 +1,71 @@
+{
+    "stub emits report header and versions": {
+        "content": [
+            {
+                "0": [
+                    "qc_report.csv:md5,9f22237028bb4b6fb3f924cc52764399"
+                ],
+                "1": [
+                    "versions.yml:md5,7c89fef424be13fcf7f7486d26684d7b"
+                ],
+                "report": [
+                    "qc_report.csv:md5,9f22237028bb4b6fb3f924cc52764399"
+                ],
+                "versions": [
+                    "versions.yml:md5,7c89fef424be13fcf7f7486d26684d7b"
+                ]
+            }
+        ],
+        "timestamp": "2026-09-15T13:20:12.303419389",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "cohort metrics include PASS, FAIL and INFO rows": {
+        "content": [
+            {
+                "0": [
+                    "qc_report.csv:md5,a9513d457bbe1e643f61418b5dd309fc"
+                ],
+                "1": [
+                    "versions.yml:md5,f9471c790b8f41034421015b71c6892e"
+                ],
+                "report": [
+                    "qc_report.csv:md5,a9513d457bbe1e643f61418b5dd309fc"
+                ],
+                "versions": [
+                    "versions.yml:md5,f9471c790b8f41034421015b71c6892e"
+                ]
+            }
+        ],
+        "timestamp": "2026-09-15T13:19:59.810535753",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "single QC file": {
+        "content": [
+            {
+                "0": [
+                    "qc_report.csv:md5,b2aa34da37f2c9ce0c7f1d1aa8c07fc3"
+                ],
+                "1": [
+                    "versions.yml:md5,f9471c790b8f41034421015b71c6892e"
+                ],
+                "report": [
+                    "qc_report.csv:md5,b2aa34da37f2c9ce0c7f1d1aa8c07fc3"
+                ],
+                "versions": [
+                    "versions.yml:md5,f9471c790b8f41034421015b71c6892e"
+                ]
+            }
+        ],
+        "timestamp": "2026-09-15T13:20:06.48779866",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    }
+}
